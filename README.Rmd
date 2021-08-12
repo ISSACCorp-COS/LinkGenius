@@ -68,7 +68,7 @@ Learning and following R conventions for declaring functions has a pedagogical b
 To include functions in your package, place the functions' scripts in files in the "R" directory. When you first created your package, that directory was created with an example `hello.R` script. Open that file in R Studio's text editor, and delete all the text above the function. Then, in the R Studio menu, click "Code" -> "Insert Roxygen Skeleton". That creates template documentation into the function's file, which you can then manually fill to describe your function. `exampleRPackage` includes an example function, whose source looks like this:
 
 ```{r, echo = FALSE, eval = TRUE, comment = NA}
-cat(readLines("R/hello.R"), sep = "\n")
+cat(readLines("R/linkRecords.R"), sep = "\n")
 ```
 
 This function, as was the data set above, is documented with [roxygen2](https://roxygen2.r-lib.org/index.html) syntax. Many of the fields are similar from the above section on data documentation. Here, we also have `@param` fields, these describe what the function's arguments are. The `@return` field describes what the function will return. `@export` indicates that the function should be exported from your package; that is, made available when you attach the package with `library()`. There is also an `@examples` field that can include executable examples of how to use your function. Below the function's description is the actual code.
@@ -76,6 +76,13 @@ This function, as was the data set above, is documented with [roxygen2](https://
 For more information on writing functions in R packages, see <http://r-pkgs.had.co.nz/r.html>.
 
 ## Finish documentation and build package
+
+```{r, echo = False, eval = True, comment = NA}
+if (!require(devtools)) install.packages("devtools")
+library(devtools)
+install.packages("fastLink")
+document()
+```
 
 We are almost ready with the minimal example package. The only remaining steps are to finish documenting the package, and then to build and install it on your computer. 
 
@@ -88,7 +95,7 @@ Doing so automatically writes the documentation in man/, and the appropriate dep
 Having clicked "Install and Restart" you have also, rather obviously, installed your package and restarted R. If, following this tutorial, you created the `hello()` function and `exampleData` data sets, they are now available to you when the package is attached:
 
 ```{r, echo = TRUE, eval = TRUE, collapse = TRUE}
-library(exampleRPackage)
+library(linkGenius)
 hello("my name")
 head(exampleData)
 ```
