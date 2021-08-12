@@ -77,13 +77,6 @@ For more information on writing functions in R packages, see <http://r-pkgs.had.
 
 ## Finish documentation and build package
 
-```{r, echo = False, eval = True, comment = NA}
-if (!require(devtools)) install.packages("devtools")
-library(devtools)
-install.packages("fastLink")
-document()
-```
-
 We are almost ready with the minimal example package. The only remaining steps are to finish documenting the package, and then to build and install it on your computer. 
 
 Your package is now documented in the DESCRIPTION file, and the functions and data are documented in their respective files in the R/ directory. The data and functions were documented with [roxygen2](https://roxygen2.r-lib.org/) syntax, which must subsequently be translated into R's documentation files in the man/ directory, and their dependencies must be listed in the NAMESPACE file. 
