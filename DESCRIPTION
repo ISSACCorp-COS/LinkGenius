@@ -1,13 +1,13 @@
-Package: exampleRPackage
+Package: linkGenius
 Type: Package
-Title: An example R package
+Title: Link Genius Record Linkage/De-duplication Tool
 Version: 0.2.0
 Date: 2017-12-14
-Authors@R: person("Matti", "Vuorre", email = "mv2521@columbia.edu",
+Authors@R: person("Thomas", "Henry", email = "tom.henry at issaccorp.com",
                   role = c("aut", "cre"))
-Description: This package is an example R package.
-URL: https://github.com/mvuorre/exampleRPackage/
-BugReports: http://github.com/mvuorre/exampleRPackage/issues/
+Description: Open-Source and User-Friendly Record Linkage/De-duplication Tool.
+URL: https://github.com/ISSACCorp-COS/LinkGenius/
+BugReports: http://github.com/ISSACCorp-COS/LinkGenius/issues/
 License: MIT + file LICENSE
 Depends: R (>= 3.1)
 Encoding: UTF-8
@@ -18,4 +18,4 @@ Suggests:
     knitr,
     rmarkdown
 Imports:
-    stringr
+    fastLink

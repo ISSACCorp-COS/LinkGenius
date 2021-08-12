@@ -1,5 +1,5 @@
-url: http://mvuorre.github.io/exampleRPackage
-title: Example R Package
+url: http://ISSACCorp-COS.github.io/LinkGenius
+title: Record Linkage/De-duplication Tool
 destination: docs
 development:
   mode: release

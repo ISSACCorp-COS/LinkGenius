@@ -16,19 +16,32 @@ knitr::opts_chunk$set(
 library(knitr)
 ```
 
-# exampleRPackage
+# linkGenius
+linkGenius is an open-source and user-friendly record linkage/de-duplication tool. Browse its [source code](https://github.com/ISSACCorp-COS/LinkGenius), or read this document for a tutorial on using this tool for Record linkage.
 
-exampleRPackage shows how R packages can be used to store and communicate scientific research products and metadata. Browse its [source code](https://github.com/mvuorre/exampleRPackage), or read this document for a tutorial on creating R packages.
 
 # Introduction
 
-Research projects produce experiments, data, analyses, manuscripts, posters, slides, stimuli and materials, computational models, and more. However, the potential added value of these products is not fully realized due to limited sharing and curating practices. Although more transparent communication of these research products has recently been encouraged [@HoutkoopDataSharingPsychology2018; @LindsaySharingDataMaterials2017; @VanpaemelAreWeWasting2015; @Wichertspooravailabilitypsychological2006; @KleinPracticalGuideTransparency2018; @MartoneDatasharingpsychology2018; @RouderMinimizingMistakesPsychological2019; @Rouderwhatwhyhow2016], these efforts often focus narrowly on sharing data (and sometimes analysis code). Further, the practical value of sharing is often limited by poor documentation, incompatible file formats, and lack of organization, resulting in low rates of reproducibility [@HardwickeDataavailabilityreusability2018]. Standardization of protocols for sharing would be beneficial; but, such standards have not yet emerged. Instead of developing another standard, we suggest borrowing existing standards and practices from software engineering. Specifically, the R package standard, with additional R authoring tools, provides a robust framework for organizing and sharing reproducible research products.
+Record linkage (or de-duplication) is an essential component of many projects and programs. If an individual is reported as a case by more than one data source, or reported at multiple times, it is vital to link records so that an individual will not be counted as ultiple incident cases. There are powerful algorithms that can automatically detect matches in many situations. However, these software tools are often proprietary or require programming/coding skills that may not be available in every state or jurisdiction. The goal of this project is to provide a free and easy-to-use solution that can would strengthen public health expertise, as this tool can be used across programs, and users who cannot write code can still use the same underlying packages and algorithms as more technically inclined users do.
 
-Some advances in data-sharing standards have emerged: In much of psychological science it is now customary to share data on Open Science Framework (OSF). However, those materials often contain idiosyncratic file organization and minimal or missing documentation for raw data. In specific areas, organization and documentation standards have emerged, [e.g., the BIDS framework in neuroscience, @gorgolewski_brain_2016], but they usually only consider data and code instead of the project as a whole. More comprehensive proposals are described in the Transparency and Openness Promotion [@nosek_promoting_2015], and Peer Reviewers' Openness initiative guidelines [@morey_peer_2016], but these fall short of describing detailed standards for organization and metadata.
+Motivating example: CDC’s Autism and Developmental Disabilities Monitoring (ADDM) Network currently supports autism surveillance in different states. States receive information from various medical and educational providers, and states must link records to ensure each child is counted once and that all critical data elements are linked to the child’s record. Link Genius has been designed to support this use case without undue dependencies on future updates to SAS, Microsoft Windows, or other software that could jeopardize the functioning of the tool, and therefore the surveillance program.
 
-We sought for a standard for organizing and sharing that would adhere to the FAIR (Findable, Accessible, Interoperable, Reusable) guidelines to maximize the reuse potential of data and support "discovery through good data management" [@WilkinsonFAIRGuidingPrinciples2016]. Additionally, we recognized the added value of including other research outputs ("products"; e.g., manuscripts) beyond datasets in a reproducible collection of materials that is openly available on the internet for transparency and ease of access. We identified the R package standard with modern online-based workflows as a solution that doesn't present overwhelming overhead for already busy researchers. Here, we present a tutorial on creating R packages for sharing research products, such as data, functions, and analysis code embedded in narrative documents.
 
-# R Package tutorial
+# Project Goals
+
+This section outlines the initial Link Genius project goals.
+
+* The initial Link Genius project goal is to develop and R package that provides an R Shiny front-end to the high-performance record linking package fastLink:
+    * Functionality should include the ability to facilitate linkage parameters (select variables used for linkages), identify data sets to be used, manually verify and review results, and export the resulting matched and non-matched data.
+    * Create documentation to instruct users on its use with a “getting started” vignette.
+    * Create this public GitHub repository for the code, as well as for tracking issues and feature requests from end-users.
+
+
+# Link Genius Tutorial
+
+TODO: The following documentation is missing and/or boilerplate. This is a work in progress.
+
+
 
 The outline of this tutorial is as follows:
 
@@ -44,109 +57,7 @@ The outline of this tutorial is as follows:
 5. Document the package
     - Describe the package, its functions, and data, in a machine- and human-readable format
 
-After these steps, you will have a functional R package on your computer. Then, we will talk about sharing and showcasing your package online.
 
-- Sharing the package
-    - Upload to GitHub to make your package (and its source code) available
-    - Connect to Open Science Framework
-- Create a website for the package
-    - Showcase your R package online with a website
-- Add narrative documents
-    - Describe how to use your data and functions (e.g. manuscripts, supplementary analysis files)
-
-## Create a package with R Studio
-
-First, use R Studio to create a new R Project. Click "File" -> "New Project..." -> "New Directory" -> "R Package". This brings up a menu where you give your package a name, and specify where to create it on your hard drive. To enable Git [@VuorreCuratingResearchAssets2018], make sure that the "Create a git repository" box is checked (see below). In this tutorial, we create an R package called exampleRPackage; if you want to follow the tutorial exactly, choose that name for your package.
-
-After you click "Create project", the project's files and folders look like this:
-
-```bash
-.
-├── .gitignore
-├── .Rbuildignore
-├── DESCRIPTION
-├── NAMESPACE
-├── R
-│   └── hello.R
-├── exampleRPackage.Rproj
-└── man
-    └── hello.Rd
-```
-
-`.gitignore` and `.Rbuildignore` are hidden files, and specify which files should be ignored by Git [@VuorreCuratingResearchAssets2018], and R package building operations, respectively. You can ignore them for now. `DESCRIPTION` is a file describing the package, and `NAMESPACE` its functions. `R/` is the folder for scripts that contain R functions. `exampleRPackage.Rproj` identifies the folder as an R package project. `man/` is the "manuals" folder which will have files documenting the package's functions. 
-
-The package is already functional, but it contains nothing useful: Next, we introduce and edit the content to create a complete package that contains data and functions. 
-
-## Describe the package
-
-The `DESCRIPTION` file describes the package in a standard, machine-readable format. This file is automatically created with example content by R Studio. However, you need to edit the file to reflect the details of your package, making sure you don't change the formatting: This file is read by the R package creating process, and the file must therefore remain machine-readable. Here's an example:
-
-```bash
-Package: exampleRPackage
-Type: Package
-Title: An example R package
-Version: 0.1.0
-Authors@R: person("Matti", "Vuorre", email = "mv2521@columbia.edu",
-                  role = c("aut", "cre"))
-Description: This package is an example R package.
-Encoding: UTF-8
-LazyData: true
-Depends: 
-    R (>= 3.1)
-Imports:
-    stringr
-```
-
-This file serves two important purposes. First, it describes your package (`Title`, `Version` number, `Authors`, and `Description`). The `Authors@R` field contains person information in R syntax (see `?person`), and can include multiple persons by wrapping them in `c()`. (`Encoding` and `Lazydata` field can be ignored, for our purposes.) Second, it specifies your package's dependencies (`Depends`, `Imports`, and `Suggests` [the latter is not included in this example]).
-
-There are important differences between the three fields for specifying your package's dependencies. First, you should rarely, if ever, use `Depends`, except for specifying a version of R that your package requires. `Imports` is the most common field for listing the R packages that your package requires: Packages listed in `Imports` are installed when your package is installed. When you write functions (see below) in your package, you can use the other package's functions with the `::` operator (e.g. `stringr::to_title_case()`).
-
-For more information about DESCRIPTION, and describing your package, see <http://r-pkgs.had.co.nz/description.html>. 
-
-### Readme
-
-Although not part of the R package standard, we recommend creating a readme file that gives additional narrative description about your package. We recommend writing the file in Markdown or R Markdown [@allaire_rmarkdown:_2016]. To create the R Markdown file, use the following function from the usethis package:
-
-```{r}
-library(usethis)
-use_readme_rmd()
-```
-
-This function created the file, and also printed a message indicating that the file has been added to the ".Rbuildignore" file. Make changes to `README.Rmd` with R Studio's text editor. When you are done, click Knit in R Studio, which produces a Markdown file that displays nicely when the package is hosted online (see below). (If your README.Rmd uses your package, you cannot Knit it before clicking "Install and Restart" in R Studio's build tab.)
-
-Now that we have described the package, let's add some data to it.
-
-## Add data
-
-The purposes of saving data in an R package are that the resulting data will be easily available, and described and organized in a standard, machine-readable format. Further, if your package's source code is under version control [@VuorreCuratingResearchAssets2018], the data will be versioned as well.
-
-Broadly, there are 3 steps to including data in an R package: 1. Placing raw data in the "data-raw" directory, 2. creating an R script that processes the raw data and creates an R data object into the "data" directory, and 3. documenting the final data object.
-
-First, we will add the raw data to a `data-raw/` directory. We use a convenience function from the usethis package to create that folder, which will also add the folder into the `.Rbuildignore` file, ensuring that the R package build process will ignore it.
-
-```{r}
-use_data_raw()
-```
-
-Then, I moved an example data file (a small simulated dataset) to the "data-raw" directory, and created a ["preprocess.R"](https://github.com/mvuorre/exampleRPackage/blob/master/data-raw/preprocess.R) file in the same directory. Usually, that file would contain the code for pre-processing the data, but for this example that is not needed. That example preprocessing file simply reads in the data file, and runs the following command:
-
-```{r}
-use_data(exampleData)
-```
-
-The above command takes the `exampleData` object from the R environment (created in the [script](https://github.com/mvuorre/exampleRPackage/blob/master/data-raw/preprocess.R)) and saves the R data object into `data/`. As a result, your R package now includes a data set called `exampleData`. 
-
-Finally, the resulting R data object should be documented in a standard format by placing a `data.R` file in the "R" directory. To document your data set, create a file called `data.R` in the `R` directory. Then, use [roxygen2](https://roxygen2.r-lib.org/) [@wickham_roxygen2:_2017] documentation syntax to write your data object's documentation in the `R/data.R` file. It should look similar to the following for our `exampleData` object:
-
-```{r, echo = FALSE, eval = TRUE, comment = NA}
-cat(readLines("R/data.R"), sep = "\n")
-```
-
-The key features of this documentation file are (from top to bottom in the above code listing):
-
-Each line begins with a `#'` to indicate roxygen2 syntax. First, your data set should have a title (`@title`). The `@description` field is an optional but highly recommended longer description of the data. For example, what were the collection procedures, who were the respondents, etc. The `@format` field describes the object (e.g. an R data.frame), its dimensions, and then describes all the variables (e.g. `group` and `score`). The `@source` field includes the source of the data, which could be a citation to an academic article, or a website, for example. Finally, the last line should be the name of the data object in quotation marks. You can document multiple data files in the same `R/data.R` file; simply leave one blank line between them.
-
-For more details on creating, documenting, and including data sets in R packages, see <http://r-pkgs.had.co.nz/data.html>.
 
 ## Create functions
 
@@ -259,3 +170,4 @@ The content we just added resulted in a website, but you could also include PDF 
 - <https://happygitwithr.com/>: A guide for using Git with R and R Studio
 
 ## References
+
