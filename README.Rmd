@@ -22,7 +22,7 @@ linkGenius is an open-source and user-friendly record linkage/de-duplication too
 
 # Introduction
 
-Record linkage (or de-duplication) is an essential component of many projects and programs. If an individual is reported as a case by more than one data source, or reported at multiple times, it is vital to link records so that an individual will not be counted as ultiple incident cases. There are powerful algorithms that can automatically detect matches in many situations. However, these software tools are often proprietary or require programming/coding skills that may not be available in every state or jurisdiction. The goal of this project is to provide a free and easy-to-use solution that can would strengthen public health expertise, as this tool can be used across programs, and users who cannot write code can still use the same underlying packages and algorithms as more technically inclined users do.
+Record linkage (or de-duplication) is an essential component of many projects and programs. If an individual is reported as a case by more than one data source, or reported at multiple times, it is vital to link records so that an individual will not be counted as multiple incident cases. There are powerful algorithms that can automatically detect matches in many situations. However, these software tools are often proprietary or require programming/coding skills that may not be available in every state or jurisdiction. The goal of this project is to provide a free and easy-to-use solution that can strengthen public health expertise, as this tool can be used across programs, and users who cannot write code can still use the same underlying packages and algorithms as more technically inclined users do.
 
 Motivating example: CDC’s Autism and Developmental Disabilities Monitoring (ADDM) Network currently supports autism surveillance in different states. States receive information from various medical and educational providers, and states must link records to ensure each child is counted once and that all critical data elements are linked to the child’s record. Link Genius has been designed to support this use case without undue dependencies on future updates to SAS, Microsoft Windows, or other software that could jeopardize the functioning of the tool, and therefore the surveillance program.
 
@@ -41,7 +41,7 @@ This section outlines the initial Link Genius project goals.
 
 You can quickly and easily try out Link Genius via a Google Colaboratory notebook here:  
 
-[Colab Tool](http://colab.research.google.com/github/ISSACCorp-COS/LinkGenius/blob/master/vignettes/link_genius_colab_tool.ipynb)
+[Colab Tool](http://colab.research.google.com/github/ISSACCorp-COS/LinkGenius/blob/master/vignettes/LinkGenius_v0_2_0.ipynb)
 
 TODO: The following documentation is missing and/or boilerplate. This is a work in progress.
 
