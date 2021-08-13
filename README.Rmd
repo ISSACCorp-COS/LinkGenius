@@ -16,8 +16,8 @@ knitr::opts_chunk$set(
 library(knitr)
 ```
 
-# linkGenius
-linkGenius is an open-source and user-friendly record linkage/de-duplication tool. Browse its [source code](https://github.com/ISSACCorp-COS/LinkGenius), or read this document for a tutorial on using this tool for Record linkage.
+# Link Genius
+Link Genius is an open-source and user-friendly record linkage/de-duplication tool. Browse its [source code](https://github.com/ISSACCorp-COS/LinkGenius), or read this document for a tutorial on using this tool for Record linkage.
 
 
 # Introduction
