@@ -23,7 +23,6 @@ def create_iframe(port, height):
             document.body.appendChild(link);
         })();
     """
-    target="_parent">
     replacements = [
         ("%PORT%", "%d" % port),
         ("%HEIGHT%", "%d" % height),
