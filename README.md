@@ -22,10 +22,10 @@ Motivating example: CDC’s Autism and Developmental Disabilities Monitoring (AD
 
 This section outlines the initial Link Genius project goals.
 
-* The initial Link Genius project goal is to develop and R package that provides an R Shiny front-end to the high-performance record linking package fastLink:
-    * Functionality should include the ability to facilitate linkage parameters (select variables used for linkages), identify data sets to be used, manually verify and review results, and export the resulting matched and non-matched data.
-    * Create documentation to instruct users on its use with a “getting started” vignette.
-    * Create this public GitHub repository for the code, as well as for tracking issues and feature requests from end-users.
+* The initial Link Genius project goal is to develop an R package that provides an R Shiny front-end to the high-performance record linking package fastLink:
+    * Functionality to include the ability to facilitate linkage parameters (select variables used for linkages), identify data sets to be used, manually verify and review results, and export the resulting matched and non-matched data.
+    * Documentation to instruct users on its use with a “getting started” vignette.
+    * This public GitHub repository for the code, as well as for tracking issues and feature requests from end-users.
 
 
 # Link Genius Tutorial

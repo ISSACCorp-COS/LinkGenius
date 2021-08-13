@@ -21,9 +21,8 @@ def display_iframe(port, height):
         shell = shell.replace(k, v)
 
     script = IPython.display.Javascript(shell)
-    IPython.display.display(script)
 
-    return "Hello from python!"
+    return script
 
 def show():
     return display_iframe(3771, 500)
