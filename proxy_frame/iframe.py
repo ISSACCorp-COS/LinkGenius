@@ -4,7 +4,7 @@ def display_iframe(port, height):
     shell = """
         (async () => {
             const url = await google.colab.kernel.proxyPort(%PORT%, {"cache": true});
-            console.log(`Adding ifram from URL:${url}`);
+            console.log(`Adding iframe from URL:${url}`);
             const iframe = document.createElement('iframe');
             iframe.src = url;
             iframe.setAttribute('width', '100%');
@@ -22,7 +22,7 @@ def display_iframe(port, height):
 
     script = IPython.display.Javascript(shell)
 
-    return script
+    return shell
 
 def show():
     return display_iframe(3771, 500)
