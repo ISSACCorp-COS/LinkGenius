@@ -1,6 +1,4 @@
-import IPython.display
-
-def display_iframe(port, height):
+def create_iframe(port, height):
     shell = """
         (async () => {
             const url = await google.colab.kernel.proxyPort(%PORT%, {"cache": true});
@@ -20,9 +18,5 @@ def display_iframe(port, height):
     for (k, v) in replacements:
         shell = shell.replace(k, v)
 
-    script = IPython.display.Javascript(shell)
-
     return shell
 
-def show(port):
-    return display_iframe(port, 500)
