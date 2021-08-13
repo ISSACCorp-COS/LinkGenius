@@ -16,11 +16,12 @@ def create_iframe(port, height):
             const url = await google.colab.kernel.proxyPort(%PORT%, {"cache": true});
             console.log(`Adding iframe from URL:${url}`);
             const link = document.createElement('a');
-            link.href = url;
-            link.rel = "nofollow";
-            link.target = "_blank";
-            link.appendChild(url);
+            link.setAttribute('href', url);
+            link.setAttribute('rel', "nofollow");
+            link.setAttribute('target', "_blank");
+            link.text = url;
             document.body.appendChild(link);
+            document.body.appendChild(url);
         })();
     """
     replacements = [
