@@ -23,6 +23,9 @@ library(fastLink)
 if( !require(shiny) ) install.packages("shiny")
 library(shiny)
 
+if( !require(shinyWidgets) ) install.packages("shinyWidgets")
+library(shinyWidgets)
+
 #if( !require(reticulate) ) install.packages("reticulate")
 #library(reticulate)
 #iframe <- import("proxy_frame.iframe", as = "iframe")
@@ -31,61 +34,181 @@ library(shiny)
 #print(iframe_script)
 ```
 
+The following chunk creates some defaults.  You do not need to modify these, since the GUI will present these fields.
+
+```{r}
+data(samplematch)
+# provides:
+# dfA
+# dfB
+
+varnames <- c("firstname", "middlename", "lastname", "housenum", "streetname", "city", "birthyear")
+stringdistMatch <- c("firstname", "middlename", "lastname", "streetname", "city")
+partialMatch <- c("firstname", "lastname", "streetname")
+```
+
 The following chunk loads in line the Link Genius logic.  In the future when this project has been funded this will be refactored into an R library.  Until then, this should suffice to demonstrate the functionality. 
 
 ```{r}
-# Define UI for app that draws a histogram ----
 ui <- fluidPage(
 
-  # App title ----
-  titlePanel("Hello Shiny!"),
+  titlePanel("Link Genius Interactive Record Linker"),
 
-  # Sidebar layout with input and output definitions ----
-  sidebarLayout(
+  h1("Data Set Summaries"),
 
-    # Sidebar panel for inputs ----
-    sidebarPanel(
+  fluidRow(
+    column(6, 
+      # Input: Select a dataset ----
+      h4("Data Set A"),
 
-      # Input: Slider for the number of bins ----
-      sliderInput(inputId = "bins",
-                  label = "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30)
+      # Input: Specify the number of observations to view ----
+      numericInput("obsNA", "Number of observations to view:", 10),
 
+      # Include clarifying text ----
+      helpText("Note: while the data view will show only the specified",
+               "number of observations, the summary will still be based",
+               "on the full dataset."),
+
+      h4("Summary"),
+      verbatimTextOutput("summaryA"),
+
+      h4("Randomly Sampled Rows"),
+      div(tableOutput("viewA"), style = "font-size:50%")
+    ),
+    column(6,
+      # Input: Select a dataset ----
+      h4("Data Set B"),
+
+      # Input: Specify the number of observations to view ----
+      numericInput("obsNB", "Number of observations to view:", 10),
+
+      # Include clarifying text ----
+      helpText("Note: while the data view will show only the specified",
+               "number of observations, the summary will still be based",
+               "on the full dataset."),
+
+      h4("Summary"),
+      verbatimTextOutput("summaryB"),
+
+      h4("Randomly Sampled Rows"),
+      div(tableOutput("viewB"), style = "font-size:50%")
     ),
 
-    # Main panel for displaying outputs ----
-    mainPanel(
+    helpText("Each time this Update View is pressed, another random ",
+             "subset of each data set will be displayed."),
+    actionButton("updateSummary", "Update View"),
 
-      # Output: Histogram ----
-      plotOutput(outputId = "distPlot")
+  ),
 
-    )
-  )
+  h1("Record Link Plan"),
+
+  fluidRow(
+    column(2,
+      h4("Columns in A"),
+      htmlOutput("colsA")
+    ),
+    column(8,
+      div(h3("Columns in A and B"), style = "text-align:center"),
+      fluidRow(
+          column(4,
+            h4("Columns not considered"),
+          ),
+          column(4,
+            h4("Columns to be matched"),
+          ),
+          column(4,
+            h4("Columns to be matched, using partial agreement"),
+          )
+        ),
+      fluidRow(
+          column(4,
+            selectizeGroupUI(
+              inputId = "pickUnused",
+              choices = c("1", "2", "3")),
+          ),
+          column(4,
+            pickerInput(
+              inputId = "pickMatchers",
+              choices = c()),
+          ),
+          column(4,
+            pickerInput(
+              inputId = "pickPartial",
+              choices = c()),
+          )
+        )
+    ),
+    column(2,
+      h4("Columns in B"),
+      htmlOutput("colsB")
+    ),
+  )  
 )
 
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
 
-  # Histogram of the Old Faithful Geyser Data ----
-  # with requested number of bins
-  # This expression that generates a histogram is wrapped in a call
-  # to renderPlot to indicate that:
-  #
-  # 1. It is "reactive" and therefore should be automatically
-  #    re-executed when inputs (input$bins) change
-  # 2. Its output type is a plot
-  output$distPlot <- renderPlot({
+  # Generate a summary of datasetA ----
+  output$summaryA <- renderPrint({
+    summary(dfA)
+  })
 
-    x    <- faithful$waiting
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+  aNames <- colnames(dfA)
+  bNames <- colnames(dfB)
 
-    hist(x, breaks = bins, col = "#75AADB", border = "white",
-         xlab = "Waiting time to next eruption (in mins)",
-         main = "Histogram of waiting times")
+  colsBoth <- Reduce(intersect, list(aNames, bNames))
 
+  output$colsA <- renderText({
+      paste(
+          "<p>",
+          paste(aNames, sep = "</p><p>"),
+          "</p>", sep = " "
+      )
     })
+
+  output$colsB <- renderText({
+      paste(
+          "<p>",
+          paste(bNames, sep = "</p><p>"),
+          "</p>", sep = " "
+      )
+    })
+
+  # Generate a summary of datasetB ----
+  output$summaryB <- renderPrint({
+    summary(dfB)
+  })
+
+  datasetA <- eventReactive(input$updateSummary, 
+      head(sample(dfA), n = isolate(input$obsNA)),
+      ignoreNULL = FALSE)
+
+  datasetB <- eventReactive(input$updateSummary, 
+      head(sample(dfB), n = isolate(input$obsNB)),
+      ignoreNULL = FALSE)
+
+  # Show the first "n" observations of A ----
+  # The use of isolate() is necessary because we don't want the table
+  # to update whenever input$obs changes (only when the user clicks
+  # the action button)
+  output$viewA <- renderTable({
+    datasetA()
+  })
+
+  # Show the first "n" observations of B ----
+  # The use of isolate() is necessary because we don't want the table
+  # to update whenever input$obs changes (only when the user clicks
+  # the action button)
+  output$viewB <- renderTable({
+    datasetB()
+  })
+
+  #observeEvent(input$matchUnused, {
+  #    print(input$pickUnused)
+      #updatePickerInput(session = session, inputId = "pickUnused",
+      #  choices = colsBoth)
+  #})
+  
 }
 ```
 

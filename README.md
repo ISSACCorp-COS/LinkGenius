@@ -30,9 +30,9 @@ This section outlines the initial Link Genius project goals.
 
 # Link Genius Tutorial
 
-You can quickly and easily try out Link Genius via a Google Colaboratory notebook here:  
+You can quickly and easily try out Link Genius via a demonstration Rmd here:  
 
-[Colab Tool](http://colab.research.google.com/github/ISSACCorp-COS/LinkGenius/blob/master/vignettes/LinkGenius_v0_2_0.ipynb)
+[Tool Demo](https://github.com/ISSACCorp-COS/LinkGenius/blob/master/vignettes/LinkGeniusDemo_v0_2_0.Rmd)
 
 TODO: The following documentation is missing and/or boilerplate. This is a work in progress.
 
